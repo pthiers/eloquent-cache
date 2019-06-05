@@ -5,7 +5,11 @@ use Tests\Models\{
 	Category,
 	CustomCategory,
 	Product,
-	CategorySoftDelete
+    CategorySoftDelete,
+    User,
+    Comment,
+    Post,
+    Video
 };
 
 $factory->define(Category::class, function (Faker $faker) {
@@ -29,5 +33,28 @@ $factory->define(CategorySoftDelete::class, function (Faker $faker) {
 $factory->define(Product::class, function (Faker $faker) {
     return [
         'name' => $faker->word,
+    ];
+});
+
+$factory->define(User::class, function (Faker $faker) {
+    return [
+        'name' => $faker->word,
+    ];
+});
+$factory->define(Comment::class, function (Faker $faker) {
+    return [
+        'name' => $faker->word,
+    ];
+});
+
+$factory->define(Post::class, function (Faker $faker) {
+    return [
+        'body' => $faker->word,
+    ];
+});
+
+$factory->define(Video::class, function (Faker $faker) {
+    return [
+        'body' => $faker->word,
     ];
 });
