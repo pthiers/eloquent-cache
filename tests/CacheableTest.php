@@ -13,7 +13,7 @@ use Tests\Models\{
     Post
 };
 use Authentik\EloquentCache\CacheQueryBuilder;
-use Orchestra\Database\ConsoleServiceProvider;
+#use Orchestra\Database\ConsoleServiceProvider;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
@@ -35,7 +35,7 @@ class CacheableTest extends TestCase
     protected function getPackageProviders($app)
     {
         return [
-            ConsoleServiceProvider::class,
+            Orchestra\Database\ConsoleServiceProvider::class,
         ];
     }
     
