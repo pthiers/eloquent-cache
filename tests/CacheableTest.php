@@ -7,7 +7,10 @@ use Tests\Models\{
     Category,
     CustomCategory,
     Product,
-    CategorySoftDelete
+    CategorySoftDelete,
+    User,
+    Video,
+    Post
 };
 use Authentik\EloquentCache\CacheQueryBuilder;
 use Orchestra\Database\ConsoleServiceProvider;
@@ -23,6 +26,8 @@ class CacheableTest extends TestCase
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
 
         factory(Category::class, 20)->create();
+
+        factory(Comment::class, 20)->create();
 
         $GLOBALS['cache_busting'] = true;
     }
@@ -261,6 +266,18 @@ class CacheableTest extends TestCase
 
         $this->assertTrue($cachedInstance->is($instance));
         $this->assertInstanceOf(Category::class, $cachedInstance->parent);
+    }
+
+    public function testEagerPolymorphicLoading() {
+        $video = $videoModel = Video::with('comments.user')->first();
+        $post = $postModel = Post::with('comments.user')->first();
+
+        $this->assertNotNull($this->getCachedInstance($videoModel, $video->id));
+        $this->assertNotNull($this->getCachedInstance($postModel, $video->id));
+
+
+
+
     }
 
     public function testSoftDelete() {

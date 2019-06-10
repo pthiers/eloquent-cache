@@ -42,19 +42,33 @@ $factory->define(User::class, function (Faker $faker) {
     ];
 });
 $factory->define(Comment::class, function (Faker $faker) {
+
+    $commentables = [
+        Post::class,
+        Video::class
+    ];
+
+    $commentableType = $faker->randomElement($commentables);
+    $commentable = factory($commentableType)->create();
+
     return [
         'name' => $faker->word,
+        'user_id' => factory(User::class)->create()->id,
+        'commentable_id' => $commentable->id, 
+        'commentable_type' => commentableType
     ];
 });
 
 $factory->define(Post::class, function (Faker $faker) {
     return [
         'body' => $faker->word,
+        'user_id' => factory(User::class)->create()->id,
     ];
 });
 
 $factory->define(Video::class, function (Faker $faker) {
     return [
-        'body' => $faker->word,
+        'url' => $faker->url,
+        'user_id' => factory(User::class)->create()->id,
     ];
 });
