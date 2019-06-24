@@ -10,7 +10,8 @@ use Tests\Models\{
     CategorySoftDelete,
     User,
     Video,
-    Post
+    Post,
+    Comment
 };
 use Authentik\EloquentCache\CacheQueryBuilder;
 use Orchestra\Database\ConsoleServiceProvider;
