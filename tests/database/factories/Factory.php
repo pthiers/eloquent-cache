@@ -55,7 +55,7 @@ $factory->define(Comment::class, function (Faker $faker) {
         'name' => $faker->word,
         'user_id' => factory(User::class)->create()->id,
         'commentable_id' => $commentable->id, 
-        'commentable_type' => commentableType
+        'commentable_type' => $commentableType
     ];
 });
 
