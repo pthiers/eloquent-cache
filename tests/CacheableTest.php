@@ -270,14 +270,17 @@ class CacheableTest extends TestCase
     }
 
     public function testEagerPolymorphicLoading() {
-        $video = $videoModel = Video::with('comments.user')->first();
+        $video = $videoModel = Video::with('comments')->first();
         $post = $postModel = Post::with('comments.user')->first();
 
         $this->assertNotNull($this->getCachedInstance($videoModel, $video->id));
         $this->assertNotNull($this->getCachedInstance($postModel, $video->id));
 
+        $videoWithUser = Video::with('comments.user')->first();
 
-
+        $this->assertNotNull($this->getCachedInstance($videoWithUser, $video->id));
+        $this->assertTrue($videoWithUser->relationLoaded('comments'));
+        $this->assertTrue($videoWithUser->comments->relationLoaded('user'));
 
     }
 
