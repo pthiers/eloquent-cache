@@ -281,6 +281,12 @@ class CacheableTest extends TestCase
         $this->assertNotNull($this->getCachedInstance($videoWithUser, $video->id));
         $this->assertTrue($this->modelHasRelations($videoWithUser, 'comments'));
         $this->assertTrue($this->modelHasRelations($videoWithUser, 'comments.user'));
+
+        $user_id = $videoWithUser->comments->first()->user_id;
+        $dbUser = User::findOrFail($user_id);
+
+        $this->assertNotNull($this->getCachedInstance($$videoWithUser->comments->first()->user, $user_id));
+
     }
 
     public function testSoftDelete() {
