@@ -285,7 +285,7 @@ class CacheableTest extends TestCase
         $user_id = $videoWithUser->comments->first()->user_id;
         $dbUser = User::findOrFail($user_id);
 
-        $this->assertNotNull($this->getCachedInstance($$videoWithUser->comments->first()->user, $user_id));
+        $this->assertNotNull($this->getCachedInstance($videoWithUser->comments->first()->user, $user_id));
 
     }
 
