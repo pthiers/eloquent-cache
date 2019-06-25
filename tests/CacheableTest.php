@@ -279,9 +279,8 @@ class CacheableTest extends TestCase
         $videoWithUser = Video::with('comments.user')->first();
 
         $this->assertNotNull($this->getCachedInstance($videoWithUser, $video->id));
-        $this->assertTrue($videoWithUser->relationLoaded('comments'));
-        $this->assertTrue($videoWithUser->comments->relationLoaded('user'));
-
+        $this->assertTrue($this->modelHasRelations($videoWithUser, 'comments'));
+        $this->assertTrue($this->modelHasRelations($videoWithUser, 'comments.user'));
     }
 
     public function testSoftDelete() {
@@ -358,5 +357,42 @@ class CacheableTest extends TestCase
         // are in the model's attributes
         $model->save();
         $this->assertTrue(true);
+    }
+
+    protected function modelHasRelations(\Illuminate\Database\Eloquent\Model $model, $relations): bool {
+
+        if (is_string($relations)) {
+            $relations = explode('.', $relations);
+        }
+
+        $queue = array_reverse($relations);
+
+        while (count($queue)) {
+
+            $relation = $queue[count($queue) - 1];
+
+            if ($model instanceof \Illuminate\Support\Collection) {
+
+                if (
+                    $model->contains(function ($item) use ($relation) {
+                        return !$item->relationLoaded($relation);
+                    })
+                ) {
+                    return false;
+                }
+
+                $model = $model->first();
+
+            } else
+
+            if (!$model->relationLoaded($relation)) {
+                return false;
+            }
+
+            $model = $model[$relation];
+            array_pop($queue);
+        }
+
+        return true;
     }
 }
